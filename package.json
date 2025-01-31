@@ -5,9 +5,11 @@
   "dependencies": {
     "ajv-keywords": "^5.1.0",
     "cra-template": "1.2.0",
+    "html5-qrcode": "^2.3.8",
     "qrcode.react": "^4.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-qr-scanner": "^1.0.0-alpha.11",
     "react-router-dom": "^7.1.1",
     "react-scripts": "^5.0.1",
     "svgo": "^3.3.2",
