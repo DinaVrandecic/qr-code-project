@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Html5QrcodePlugin from "./scanner/Html5QrcodePlugin";
 
 const App = () => {
+  const [scannedData, setScannedData] = useState(""); // Store scanned QR data
+
   const onNewScanResult = (decodedText) => {
     console.log("Decoded text: ", decodedText);
+    setScannedData(decodedText); // Update state with scanned data
   };
 
   return (
@@ -16,6 +19,12 @@ const App = () => {
         qrCodeSuccessCallback={onNewScanResult}
         qrCodeErrorCallback={(error) => console.error("QR Error: ", error)}
       />
+
+      {/* Display scanned QR code data */}
+      <div>
+        <h3>Scanned Data:</h3>
+        <p>{scannedData ? scannedData : "No data scanned yet"}</p>
+      </div>
     </div>
   );
 };
