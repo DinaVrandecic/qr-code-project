@@ -3,14 +3,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Vaša Firebase konfiguracija
 const firebaseConfig = {
-  apiKey: "AIzaSyCM9ESQyuSKzuDMV_vQ0vA9keoHjfEQOkU",
-  authDomain: "qrcode-63444.firebaseapp.com",
-  databaseURL:
-    "https://qrcode-63444-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "qrcode-63444",
-  storageBucket: "qrcode-63444.firebasestorage.app",
-  messagingSenderId: "288016518567",
-  appId: "1:288016518567:web:7f019a353e7a81289c7a82",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Inicijalizacija Firebase aplikacije
