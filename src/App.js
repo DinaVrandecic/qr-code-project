@@ -26,11 +26,14 @@ const App = () => {
       if (classCollections.includes(parsedData.predmet)) {
         // Add data to the correct collection inside "class"
         console.log();
-        await setDoc(doc(db, "class", parsedData.predmet, parsedData.prezime), {
-          name: parsedData.name,
-          prezime: parsedData.prezime,
-          timestamp: parsedData.timestamp,
-        });
+        await setDoc(
+          doc(db, "class", parsedData.predmet, "students", parsedData.prezime),
+          {
+            name: parsedData.name,
+            prezime: parsedData.prezime,
+            timestamp: parsedData.timestamp,
+          }
+        );
 
         console.log(`Data saved to "class/${parsedData.predmet}/students"!`);
       } else {
