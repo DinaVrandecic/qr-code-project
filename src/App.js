@@ -5,8 +5,10 @@ import {
   collection,
   doc,
   setDoc,
+  getDoc,  // Za pojedinačne dokumente
   getDocs,
   getFirestore,
+  serverTimestamp,
 } from "firebase/firestore";
 
 const App = () => {
@@ -24,22 +26,41 @@ const App = () => {
 
       // Check if the subject exists as a collection inside "class"
       if (classCollections.includes(parsedData.predmet)) {
-        // Add data to the correct collection inside "class"
-        console.log();
-        await setDoc(
-          doc(db, "class", parsedData.predmet, "students", parsedData.prezime),
-          {
+        // Reference to the student document in the correct class
+        const studentDocRef = doc(db, "class", parsedData.predmet, "students", parsedData.prezime);
+        
+        // Check if the student already exists in the "students" collection
+        const studentSnapshot = await getDoc(studentDocRef); // getDoc() za pojedinačan dokument
+
+        if (studentSnapshot.exists()) {
+          console.log("Student found, updating timestamps...");
+
+          // Add new timestamp to the student's "timestamps" subcollection
+          const timestampRef = doc(studentDocRef, "timestamps", `timestamp_${new Date().toISOString()}`);
+          await setDoc(timestampRef, {
+            timestamp: serverTimestamp(), // Use server timestamp for the exact time
+          });
+
+          console.log(`Timestamp successfully added to "class/${parsedData.predmet}/students/${parsedData.prezime}/timestamps"!`);
+        } else {
+          console.warn("Student does not exist in the database. Creating new student document...");
+
+          // Create new student document if it doesn't exist
+          await setDoc(studentDocRef, {
             name: parsedData.name,
             prezime: parsedData.prezime,
-            timestamp: parsedData.timestamp,
-          }
-        );
+          });
 
-        console.log(`Data saved to "class/${parsedData.predmet}/students"!`);
+          // Add the first timestamp
+          const timestampRef = doc(studentDocRef, "timestamps", `timestamp_${new Date().toISOString()}`);
+          await setDoc(timestampRef, {
+            timestamp: serverTimestamp(),
+          });
+
+          console.log(`New student created and timestamp added to "class/${parsedData.predmet}/students/${parsedData.prezime}/timestamps"!`);
+        }
       } else {
-        console.warn(
-          `Collection "${parsedData.predmet}" not found inside "class".`
-        );
+        console.warn(`Collection "${parsedData.predmet}" not found inside "class".`);
       }
     } catch (error) {
       console.error("Error saving QR data:", error);
